@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SoftWear{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" type="image/x-icon" width="16" height="16">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <header>
+        <div class="header-wrapper">
+            <nav class="header-nav">
+                <a class="main-logo" href="{% url 'index' %}" title="Главная">SoftWear</a>
+                <ul>
+                    <li class="nav__men">
+                        <a href="{% url 'shop' %}?sex=Man">Мужчины</a>
+                        <ul class="clothes-types">
+{#                            <li>#}
+{#                                <a href="{% url 'shop' %}?sex=man&clothes_type_id=1">Аксессуары</a>#}
+{#                            </li>#}
+                            {% for m_c_type in men_clothes_types %}
+                                <li>
+                                    <a href="{% url 'shop' %}?sex=Man&clothes_type_id={{ m_c_type.id }}">{{ m_c_type }}</a>
+                            </li>
+                            {% endfor %}
+{#                            <li>#}
+{#                                Сумки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Шапки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Футболки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Толстовки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Кардиганы#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Костюмы#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Куртки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Джинсы#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Штаны#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Брюки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Рубашки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Обувь#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Шорты#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Очки#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Нижнее белье и носки#}
+{#                            </li>#}
+                        </ul>
+                        <ul class="brands">
+                            {% for m_brand in men_brands %}
+                                <li>
+                                    <a href="{% url 'shop' %}?sex=Man&brand_id={{ m_brand.id }}">{{ m_brand }}</a>
+                                </li>
+                            {% endfor %}
+{#                            <li>#}
+{#                                <a href="{% url 'shop' %}?sex=man&brand_id=1">Levis</a>#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Persol#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Penfield#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Superga#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Edwin#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Grenson#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Paul Smith#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Jack & Jones#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                New Balance#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Supreme#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Ralph Lauren#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Wood Wood#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Nike#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Ray-Ban#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                Selected Homme#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                River Island#}
+{#                            </li>#}
+                        </ul>
+                    </li>
+                    <li class="nav__women">
+                        <a href="{% url 'shop' %}?sex=Woman">Женщины</a>
+                        <ul class="clothes-types">
+                            {% for wm_c_type in women_clothes_types %}
+                                <li>
+                                    <a href="{% url 'shop' %}?sex=Woman&clothes_type_id={{ wm_c_type.id }}">{{ wm_c_type }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="brands">
+                            {% for wm_brand in women_brands %}
+                                <li>
+                                    <a href="{% url 'shop' %}?sex=Woman&brand_id={{ wm_brand.id }}">{{ wm_brand }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'shop' %}">Магазин</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'support' %}">Поддержка</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'profile' %}">Профиль</a>
+                    </li>
+                    <li>
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'logout' %}">Выйти</a>
+                        {% else %}
+                            <a href="{% url 'login' %}">Войти</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav__cart"><a href="{% url 'cart' %}" title="Корзина"><span class="visually-hidden">Корзина</span></a></div>
+        </div>
+    </header>
+    {% block main_block %}
+    {% endblock %}
+    <footer>
+        <div class="footer-wrapper">
+            <div class="footer__contacts">
+                <a href="{% url 'about' %}"><h3>Наши контакты</h3></a>
+                <p>1401 South Grand Avenue<br>Los Angeles, CA 90015 <b>(213) 748-2411</b></p>
+                <ul class="footer__socials">
+                    <li><a href="#">f</a></li>
+                    <li><a href="#">l</a></li>
+                    <li><a href="#">g</a></li>
+                    <li><a href="#">v</a></li>
+                    <li><a href="#">r</a></li>
+                </ul>
+            </div>
+            <div class="footer__map">
+                <h3>Карта сайта</h3>
+                <ul>
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'shop' %}">Магазин</a></li>
+                    <li><a href="{% url 'support' %}">Поддержка</a></li>
+                    <li><a href="{% url 'profile' %}">Профиль</a></li>
+                    <li><a href="{% url 'cart' %}">Корзина</a></li>
+                </ul>
+            </div>
+            <div class="footer__support">
+                <h3>Поддержка</h3>
+                <ul>
+                    <li><a href="{% url 'terms' %}">Условия использования</a></li>
+                    <li><a href="{% url 'support' %}#refund">Возврат товара</a></li>
+                    <li><a href="{% url 'profile' %}#orders">Отслеживание заказа</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__copyright">
+            <p>© 2020 SoftWear  -  All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>

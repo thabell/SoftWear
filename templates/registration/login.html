@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}SoftWear - Вход{% endblock %}
+
+{% block body_class %}login{% endblock %}
+
+{% block main_block %}
+    <div class="billboard">
+        <div class="billboard-wrapper">
+            <h1>Вход</h1>
+            <p class="h1-annotation">Введите данные для входа</p>
+        </div>
+    </div>
+    <main>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <button class="button" type="submit">Войти</button><br><br>
+            <a href="{% url 'signup' %}" target="_blank">Зарегистрироваться</a>
+        </form>
+    </main>
+{% endblock %}

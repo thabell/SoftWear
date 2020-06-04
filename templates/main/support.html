@@ -1,0 +1,39 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}SoftWear - Поддержка{% endblock %}
+
+{% block body_class %}support{% endblock %}
+
+{% block main_block %}
+    <div class="billboard">
+        <div class="billboard-wrapper">
+            <h1>Поддержка</h1>
+            <p class="h1-annotation">Напишите нам здесь</p>
+        </div>
+    </div>
+    <main>
+        {% if review_sent %}
+            <h2>Спасибо за Ваш отзыв!</h2>
+        {% elif refund_sent %}
+            <h2>Заявка принята!</h2>
+        {% else %}
+            <section class="review">
+                <h2>Отзыв, жалоба, пожелание</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ review_form.as_p }}
+                    <button class="button" type="submit" name="review_submit">Отправить</button>
+                </form>
+            </section>
+            <section class="refund">
+                <a id="refund"><h2>Возврат товара</h2></a>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ refund_form.as_p }}
+                    <button class="button" type="submit" name="refund_submit">Отправить</button>
+                </form>
+            </section>
+        {% endif %}
+    </main>
+{% endblock %}

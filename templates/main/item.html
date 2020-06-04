@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load calc_sale_filter %}
+
+{% block title %}SoftWear - Вещь{% endblock %}
+
+{% block body_class %}item{% endblock %}
+
+{% block main_block %}
+    <div class="billboard">
+        <div class="billboard-wrapper">
+            <h1>Вещь</h1>
+            <p class="h1-annotation">Подробный просмотр вещи здесь</p>
+        </div>
+    </div>
+    <main>
+        {% if curr_item %}
+            <h2>{{ curr_item }}</h2>
+            <div class="curr-item__content-wrapper">
+                <div class="curr-item__img-wrapper">
+                    <img class="curr-item__img" src="{{ curr_item.photo.url }}" alt="{{ curr_item }}">
+                </div>
+                <div class="curr-item__info-wrapper">
+                    <span class="curr-item__brand">{{ curr_item.brand }}</span>
+                    <span class="curr-item__sex">{% if curr_item.sex == "Man" %}Мужская коллекция{% else %}Женская коллекция{% endif %}</span>
+                    <!--<span class="curr-item__name">{{ curr_item }}.</span>-->
+                    <div>
+                        <span class="curr-item__cost">₽{% if curr_item.sale > 0 %}{{ curr_item.cost_int|calc_sale:curr_item.sale }}{% else %}{{  curr_item.cost_int }}{% endif %}<sup>.{{ curr_item.cost_fractional }}</sup></span>{% if curr_item.sale > 0 %}<span class="curr-item__sale">-{{ curr_item.sale }}%</span>{% endif %}
+                    </div>
+                    {% if curr_item.new == True %}<span class="curr-item__new">Новое поступление!</span>{% endif %}
+                    <span class="curr-item__type">Тип: {% for t in curr_item.clothes_type.all %}{{ t }} {% endfor %}</span><!--TODO здесь ссылки вообще, конечно, можно сделать, чтоб в магазин по этим фильтрам перенаправляло-->
+                    <span class="curr-item__description"><!--TODO--></span>
+                    <a class="button" href="{% url 'cart' %}?id={{ curr_item.id }}">В корзину</a>
+                </div>
+            </div>
+        {% else %}
+            <p>Неправильная ссылка. <a href="{% url 'shop' %}">Вернуться в магазин</a></p>
+        {% endif %}
+    </main>
+{% endblock %}

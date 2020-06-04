@@ -1,0 +1,61 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}SoftWear - Профиль{% endblock %}
+
+{% block body_class %}profile{% endblock %}
+
+{% block main_block %}
+    <div class="billboard">
+        <div class="billboard-wrapper">
+            <h1>Профиль</h1>
+            <p class="h1-annotation">Информация о заказах, отзывах и другая</p>
+        </div>
+    </div>
+    <main>
+        <section class="order_pieces">
+            {% if request.user.order_piece.all %}
+                <a id="orders"><h2>Ваши заказы</h2></a>
+                <ul>
+                    {% for order in request.user.order_piece.all %}
+                        <li>{{ order }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <a class="button" href="{% url 'shop' %}">Выбрать покупку</a>
+        </section>
+        <section class="reviews">
+            {% if request.user.review.all %}
+                <h2>Ваши отзывы</h2>
+                <ul>
+                    {% for review in request.user.review.all %}
+                        <li>{{ review }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <a class="button" href="{% url 'support' %}">Написать отзыв, пожелание, предложение</a>
+        </section>
+        <section class="refunds">
+            {% if request.user.refund.all %}
+                <h2>Ваши заявки на возврат</h2>
+                <ul>
+                    {% for refund in request.user.refund.all %}
+                        <li>{{ refund }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <a class="button" href="{% url 'support' %}#refund">Оформить заявку на возврат</a>
+        </section>
+        <section class="cart_pieces">
+            {% if request.user.cart_piece.all %}
+                <h2>Товары в Вашей корзине</h2>
+                <ul>
+                    {% for cart_piece in request.user.cart_piece.all %}
+                        <li>{{ cart_piece }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <a class="button" href="{% url 'cart' %}">Перейти в корзину</a>
+        </section>
+    </main>
+{% endblock %}

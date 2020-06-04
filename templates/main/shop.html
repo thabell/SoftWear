@@ -1,0 +1,91 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load calc_sale_filter %}
+
+{% block title %}SoftWear - Магазин{% endblock %}
+
+{% block body_class %}shop{% endblock %}
+
+{% block main_block %}
+    <div class="billboard">
+        <div class="billboard-wrapper">
+            <h1>Магазин</h1>
+            <p class="h1-annotation">Выбор покупок здесь</p>
+        </div>
+    </div>
+    <main>
+        <form class="filters" method="GET">
+            <h2>Фильтры</h2>
+            <div class="filters__new">
+                <h3>Коллекции</h3>
+                <input type="radio" name="new" id="new__all" value="all" {% if request.GET.new != "True" and request.GET.new != "False" %} checked {% endif %}>
+                <label for="new__all">Все</label><br>
+                <input type="radio" name="new" id="new__new" value="True" {% if request.GET.new == "True" %} checked {% endif %}>
+                <label for="new__new">Новые</label><br>
+                <input type="radio" name="new" id="new__old" value="False" {% if request.GET.new == "False" %} checked {% endif %}>
+                <label for="new__old">Старые</label><br>
+            </div>
+            <div class="filters__sex">
+                <h3>Пол</h3>
+                <input type="radio" name="sex" id="sex__all" value="all" {% if request.GET.sex != "Man" and request.GET.sex != "Woman" %} checked {% endif %}>
+                <label for="sex__all">Все</label><br>
+                <input type="radio" name="sex" id="sex__man" value="Man" {% if request.GET.sex == "Man" %} checked {% endif %}>
+                <label for="sex__man">Мужчины</label><br>
+                <input type="radio" name="sex" id="sex__woman" value="Woman" {% if request.GET.sex == "Woman" %} checked {% endif %}>
+                <label for="sex__woman">Женщины</label><br>
+            </div>
+            <div class="filters__clothes-types">
+                <h3>Типы вещей</h3>
+                {% for c_type in all_clothes_types %}
+                    <input type="checkbox" name="clothes_type_id" id="c_type__{{ c_type.id }}" value="{{ c_type.id }}" {% if not request.GET.clothes_type_id %} checked {% elif c_type.id in clothes_type_ids %} checked {% endif %}>
+                    <label for="c_type__{{ c_type.id }}">{{ c_type }}</label><br>
+                {% endfor %}
+            </div>
+            <div class="filters__brands">
+                <h3>Бренды</h3>
+                {% for brand in all_brands %}
+                    <input type="checkbox" name="brand_id" id="brand__{{ brand.id }}" value="{{ brand.id }}" {% if not request.GET.brand_id %} checked {% elif brand.id in brand_ids %} checked {% endif %}>
+                    <label for="brand__{{ brand.id }}">{{ brand }}</label><br>
+                {% endfor %}
+            </div>
+            <div class="filters__cost"><!--TODO--></div>
+            <div class="filters__sale">
+                <h3>Со скидкой/Без</h3>
+                <input type="radio" name="sale" id="sale__all" value="all" {% if request.GET.sale != "True" and request.GET.sale != "False" %} checked {% endif %}>
+                <label for="sale__all">Все</label><br>
+                <input type="radio" name="sale" id="sale__new" value="True" {% if request.GET.sale == "True" %} checked {% endif %}>
+                <label for="sale__new">Со скидкой</label><br>
+                <input type="radio" name="sale" id="sale__old" value="False" {% if request.GET.sale == "False" %} checked {% endif %}>
+                <label for="sale__old">Без скидки</label><br>
+            </div>
+            <button class="button fixed-submit show" type="submit">Показать товары по выбранным параметрам</button>
+            <a class="button fixed-submit flush" href="{% url 'shop' %}">Сбросить фильтры</a>
+        </form>
+        <div class="items">
+            <h2>Товары</h2>
+            {% if items %}
+                <ul class="products-list">
+                    {% for item in items %}
+                        <li class="products-list__item">
+                            <a href="{% url 'item' %}?id={{ item.id }}">
+                                {% if item.sale > 0 %}<span class="item__sale">-{{ item.sale }}%</span>{% endif %}
+                                <img src="{{ item.photo.url }}" alt="{{ item }}">
+                                <span class="item__name">{{ item }}</span>
+                                <span class="item__cost">₽{% if item.sale > 0 %}{{ item.cost_int|calc_sale:item.sale }}{% else %}{{  item.cost_int }}{% endif %}<sup>.{{ item.cost_fractional }}</sup></span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="bad-search">
+                    <p>
+                        Товаров по Вашему запросу не найдено(
+                    </p>
+                    <p>
+                        О пожелании Вы можете <a class="button" href="{% url 'support' %}">Написать нам</a>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}

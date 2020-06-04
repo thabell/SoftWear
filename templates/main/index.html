@@ -1,0 +1,75 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load calc_sale_filter %}
+
+{% block title %}SoftWear - Главная{% endblock %}
+
+{% block body_class %}index{% endblock %}
+
+{% block main_block %}
+    <div class="billboard">
+        <div class="billboard-wrapper">
+            <h1>Новые сезонные поступления</h1>
+            <p class="h1-annotation">Посмотрите на новые тренды</p>
+            <a class="button" href="{% url 'shop' %}">К покупкам</a>
+        </div>
+    </div>
+    <main>
+        <section class="new-products">
+            <h2>Последние поступления</h2>
+            <ul class="products-list">
+                {% for last in lasts %}
+                    <li class="products-list__item">
+                        <a href="{% url 'item' %}?id={{ last.id }}">
+                            {% if last.sale > 0 %}<span class="item__sale">-{{ last.sale }}%</span>{% endif %}
+                            <img src="{{ last.photo.url }}" alt="{{ last }}">
+                            <span class="item__name">{{ last }}</span>
+                            <span class="item__cost">₽{% if last.sale > 0 %}{{ last.cost_int|calc_sale:last.sale }}{% else %}{{  last.cost_int }}{% endif %}<sup>.{{ last.cost_fractional }}</sup></span>
+                        </a>
+                    </li>
+                {% endfor %}
+{#                <li class="products-list__item">#}
+{#                    <a href="{% url 'item' %}?id=1">#}
+{#                        <img src="{% static 'img/example1.png' %}" alt="Sunt Officia sed deserunt">#}
+{#                        <span class="item__name">Sunt Officia sed deserunt.</span>#}
+{#                        <span class="item__cost">₽150<sup>.00</sup></span>#}
+{#                    </a>#}
+{#                </li>#}
+            </ul>
+        </section>
+
+        <section class="popular-products">
+            <h2>Популярные вещи</h2>
+            <ul class="products-list">
+                {% for pop in popular_items %}
+                    <li class="products-list__item">
+                        <a href="{% url 'item' %}?id={{ pop.id }}">
+                            {% if pop.sale > 0 %}<span class="item__sale">-{{ pop.sale }}%</span>{% endif %}
+                            <img src="{{ pop.photo.url }}" alt="{{ pop }}">
+                            <span class="item__name">{{ pop }}</span>
+                            <span class="item__cost">₽{% if pop.sale > 0 %}{{ pop.cost_int|calc_sale:pop.sale }}{% else %}{{  pop.cost_int }}{% endif %}<sup>.{{ pop.cost_fractional }}</sup></span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <div class="brands">
+            <ul class="brands-list">
+                {% for brand in brands %}
+                    <li class="brands-list__item">
+                        <a href="{% url 'shop' %}?brand_id={{ brand.id }}">
+                            {{ brand }}
+                            <span class="brand__title">{{ brand.sex }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+{#                <li class="brands-list__item">#}
+{#                    <a href="{% url 'shop' %}?brand_id=6">#}
+{#                        <img src="{% static 'img/brand_logo_example1.png' %}" alt="Brand logo example">#}
+{#                    </a>#}
+{#                </li>#}
+            </ul>
+        </div>
+    </main>
+{% endblock %}

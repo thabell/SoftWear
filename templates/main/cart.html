@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% load calc_sale_filter %}
+
+{% block title %}SoftWear - Корзина{% endblock %}
+
+{% block body_class %}cart{% endblock %}
+
+{% block main_block %}
+    <div class="billboard">
+        <div class="billboard-wrapper">
+            <h1>Корзина</h1>
+            <p class="h1-annotation">Оформление покупок здесь</p>
+        </div>
+    </div>
+    <main>
+        {% if sent %}
+            <h2>Спасибо за заказ! Менеджер свяжется с Вами!</h2>
+        {% else %}
+            {% if request.user.cart_piece.all %}
+                <h2>В Вашей корзине находятся:</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <ul class="products-list">
+                        {% for piece in request.user.cart_piece.all %}
+                            <li class="products-list__item">
+                                <a href="{% url 'item' %}?id={{ piece.item.id }}">
+                                    {% if piece.item.sale > 0 %}<span class="item__sale">-{{ piece.item.sale }}%</span>{% endif %}
+                                    <img src="{{ piece.item.photo.url }}" alt="{{ piece.item }}">
+                                    <span class="item__name">{{ piece.item }}</span>
+                                    <span class="item__cost">₽{% if piece.item.sale > 0 %}{{ piece.item.cost_int|calc_sale:piece.item.sale }}{% else %}{{  piece.item.cost_int }}{% endif %}<sup>.{{ piece.item.cost_fractional }}</sup></span>
+                                </a>
+                                <button class="button item__delete" type="submit" name="delete_from_cart" value="{{ piece.item.id }}" title="Удалить из корзины"><span class="visually-hidden">Удалить из корзины</span></button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <button class="button" name="bye_from_cart" type="submit">Купить</button>
+                </form>
+            {% else %}
+                <h2>В Вашей корзине нет товаров</h2>
+                <div class="no-purchases">
+                    <a class="button" href="{% url 'shop' %}">За покупками</a>
+                </div>
+            {% endif %}
+        {% endif %}
+    </main>
+{% endblock %}
