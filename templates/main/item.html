@@ -28,8 +28,7 @@
                         <span class="curr-item__cost">₽{% if curr_item.sale > 0 %}{{ curr_item.cost_int|calc_sale:curr_item.sale }}{% else %}{{  curr_item.cost_int }}{% endif %}<sup>.{{ curr_item.cost_fractional }}</sup></span>{% if curr_item.sale > 0 %}<span class="curr-item__sale">-{{ curr_item.sale }}%</span>{% endif %}
                     </div>
                     {% if curr_item.new == True %}<span class="curr-item__new">Новое поступление!</span>{% endif %}
-                    <span class="curr-item__type">Тип: {% for t in curr_item.clothes_type.all %}{{ t }} {% endfor %}</span><!--TODO здесь ссылки вообще, конечно, можно сделать, чтоб в магазин по этим фильтрам перенаправляло-->
-                    <span class="curr-item__description"><!--TODO--></span>
+                    <span class="curr-item__type">Тип: {% for t in curr_item.clothes_type.all %}{{ t }} {% endfor %}</span>
                     <a class="button" href="{% url 'cart' %}?id={{ curr_item.id }}">В корзину</a>
                 </div>
             </div>

@@ -48,7 +48,6 @@
                     <label for="brand__{{ brand.id }}">{{ brand }}</label><br>
                 {% endfor %}
             </div>
-            <div class="filters__cost"><!--TODO--></div>
             <div class="filters__sale">
                 <h3>Со скидкой/Без</h3>
                 <input type="radio" name="sale" id="sale__all" value="all" {% if request.GET.sale != "True" and request.GET.sale != "False" %} checked {% endif %}>
