@@ -94,7 +94,7 @@ class OrderPiece(models.Model):
 
 
 class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="review")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="review", null=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="review_item", null=True, blank=True,
                              verbose_name="Вещь")
     comment = models.TextField('Комментарий')
@@ -111,7 +111,7 @@ class Review(models.Model):
 
 
 class Refund(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="refund")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="refund", null=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="refund_item", null=True, blank=True,
                              verbose_name="Вещь")
     comment = models.TextField('Комментарий')
