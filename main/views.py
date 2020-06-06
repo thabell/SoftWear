@@ -203,14 +203,14 @@ def support(request):
             new_review = review_form.save(commit=False)
             if request.user.is_authenticated:
                 new_review.user = request.user
-                new_review.save()
+            new_review.save()
             return HttpResponseRedirect('{}?review_sent=True'.format(reverse('support', kwargs={})))
         elif "refund_submit" in request.POST:
             refund_form = RefundForm(request.POST)
             new_refund = refund_form.save(commit=False)
             if request.user.is_authenticated:
                 new_refund.user = request.user
-                new_refund.save()
+            new_refund.save()
             return HttpResponseRedirect('{}?refund_sent=True'.format(reverse('support', kwargs={})))
     return render(request, 'main/support.html', {
         "men_clothes_types": men_clothes_types,
